@@ -965,7 +965,7 @@
                     <span class="section-tag">Comienza ahora</span>
                     <h2 class="section-title">Escucha a tu audiencia como nunca antes</h2>
                     <p class="section-sub" style="margin:0 auto;">Prueba VoxInsight gratis durante 14 días. Sin tarjeta de crédito.</p>
-                    <form id="ctaForm">
+                    <form id="ctaForm" action="https://formspree.io/f/mgawnjbq" method="POST">
                         <input type="email" placeholder="tu@email.com" required>
                         <button type="submit" class="btn-primary">Solicitar Demo <i class="fas fa-arrow-right"></i></button>
                     </form>
@@ -1072,7 +1072,7 @@
             if (heroSection) heroObserver.observe(heroSection);
 
             // ---------- FORMULARIO (Simulación) ----------
-            const form = document.getElementById('ctaForm');
+            /* const form = document.getElementById('ctaForm');
             if (form) {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -1082,7 +1082,7 @@
                         this.reset();
                     }
                 });
-            }
+            } */
 
         });
     </script>
