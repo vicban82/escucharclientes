@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Sentimiento y Clima de Opinión · Elecciones Florida 2026</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <!-- Font Awesome (iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ----- RESET & VARIABLES ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --azul-dem: #2a6fdb;
+            --azul-claro: #e6f0ff;
+            --rojo-rep: #d32f2f;
+            --rojo-claro: #ffe6e6;
+            --neutral-gris: #8e8e8e;
+            --neutral-claro: #f5f5f5;
+            --fondo: #f9fafc;
+            --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --radius: 20px;
+            --font: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--fondo);
+            color: #1e293b;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* ----- HEADER / RESÚMEN ----- */
+        .header {
+            background: linear-gradient(135deg, #0b2b5e 0%, #1a4a8b 100%);
+            color: white;
+            padding: 2.5rem 2.5rem 2rem;
+            border-radius: var(--radius);
+            margin-bottom: 2.5rem;
+            box-shadow: 0 12px 30px rgba(10, 30, 70, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: "🗳️";
+            position: absolute;
+            right: 2rem;
+            top: 1rem;
+            font-size: 4rem;
+            opacity: 0.15;
+            transform: rotate(10deg);
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.4rem;
+        }
+
+        .header .sub {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            font-weight: 400;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.5rem;
+            margin-top: 0.3rem;
+        }
+
+        .header .sub i {
+            margin-right: 0.4rem;
+            opacity: 0.7;
+        }
+
+        .resumen-ejecutivo {
+            margin-top: 1.2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            padding: 1.2rem 1.5rem;
+            border-radius: 14px;
+            border-left: 4px solid #ffd966;
+            font-size: 1rem;
+            max-width: 85%;
+        }
+
+        .resumen-ejecutivo strong {
+            color: #ffd966;
+        }
+
+        /* ----- TARJETAS DE MÉTRICAS ----- */
+        .metricas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem 1.2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: transform 0.2s;
+            border-top: 4px solid var(--azul-dem);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .metric-card .numero {
+            font-size: 2.6rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .metric-card .etiqueta {
+            font-size: 0.9rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-top: 0.2rem;
+        }
+
+        .metric-card .porcentaje {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0f2b5e;
+            background: var(--azul-claro);
+            display: inline-block;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            margin-top: 0.4rem;
+        }
+
+        .metric-card.positivo {
+            border-top-color: #2e7d32;
+        }
+        .metric-card.positivo .porcentaje {
+            background: #e8f5e9;
+            color: #1e5a22;
+        }
+        .metric-card.negativo {
+            border-top-color: var(--rojo-rep);
+        }
+        .metric-card.negativo .porcentaje {
+            background: var(--rojo-claro);
+            color: #a12424;
+        }
+        .metric-card.neutro {
+            border-top-color: var(--neutral-gris);
+        }
+        .metric-card.neutro .porcentaje {
+            background: var(--neutral-claro);
+            color: #4a4a4a;
+        }
+
+        /* ----- GRÁFICOS + CHART ----- */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .chart-box {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            padding: 1.8rem 1.5rem 1.2rem;
+        }
+
+        .chart-box h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #0b2b5e;
+        }
+
+        .chart-box h3 i {
+            opacity: 0.6;
+            font-size: 1rem;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 240px;
+        }
+
+        /* ----- SECCIONES DE COMENTARIOS ----- */
+        .comentarios-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .comentario-col {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem 1.5rem 1.2rem;
+            max-height: 340px;
+            overflow-y: auto;
+        }
+
+        .comentario-col h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            border-bottom: 2px solid #eef2f6;
+            padding-bottom: 0.5rem;
+        }
+
+        .comentario-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .comentario-col li {
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+
+        .comentario-col li:last-child {
+            border-bottom: none;
+        }
+
+        .comentario-col .icono {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            width: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .col-positivo h4 {
+            color: #1e5a22;
+            border-bottom-color: #a5d6a7;
+        }
+        .col-positivo .icono {
+            color: #2e7d32;
+        }
+        .col-negativo h4 {
+            color: #a12424;
+            border-bottom-color: #ef9a9a;
+        }
+        .col-negativo .icono {
+            color: var(--rojo-rep);
+        }
+        .col-neutro h4 {
+            color: #4a4a4a;
+            border-bottom-color: #cfd8dc;
+        }
+        .col-neutro .icono {
+            color: var(--neutral-gris);
+        }
+
+        .comentario-col::-webkit-scrollbar {
+            width: 4px;
+        }
+        .comentario-col::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        /* ----- CLIMA DE OPINIÓN (temas) ----- */
+        .clima-box {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            padding: 1.8rem 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .clima-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .temas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .tema-item {
+            background: #f8fafc;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            border: 1px solid #e9edf2;
+        }
+
+        .tema-item .freq {
+            background: #0b2b5e;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+        }
+
+        .tono-general {
+            margin-top: 1.2rem;
+            background: #f1f5f9;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            font-style: italic;
+            border-left: 6px solid #3b82f6;
+        }
+
+        /* ----- HALLAZGOS + RECOMENDACIONES ----- */
+        .hallazgos-rec {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .hallazgos-box,
+        .recom-box {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            padding: 1.8rem 2rem;
+        }
+
+        .hallazgos-box h3,
+        .recom-box h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .hallazgos-box ul,
+        .recom-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .hallazgos-box li,
+        .recom-box li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+        }
+
+        .hallazgos-box li:last-child,
+        .recom-box li:last-child {
+            border-bottom: none;
+        }
+
+        .hallazgos-box li i {
+            color: #f59e0b;
+            font-size: 1rem;
+            margin-top: 0.15rem;
+            width: 1.4rem;
+        }
+
+        .recom-box li i {
+            color: #3b82f6;
+            font-size: 1rem;
+            margin-top: 0.15rem;
+            width: 1.4rem;
+        }
+
+        /* ----- PIE DE PÁGINA ----- */
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 2rem;
+            margin-top: 1rem;
+        }
+
+        .footer i {
+            margin: 0 0.2rem;
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 920px) {
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+            .comentarios-section {
+                grid-template-columns: 1fr;
+                max-height: none;
+            }
+            .comentario-col {
+                max-height: 260px;
+            }
+            .hallazgos-rec {
+                grid-template-columns: 1fr;
+            }
+            .header .resumen-ejecutivo {
+                max-width: 100%;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metricas-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .header {
+                padding: 1.5rem;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <h1>🗳️ Análisis de Sentimiento y Clima de Opinión</h1>
+            <div class="sub">
+                <span><i class="fas fa-map-pin"></i> Elecciones primarias · Florida 2026</span>
+                <span><i class="fas fa-users"></i> ~110 comentarios analizados</span>
+                <span><i class="fas fa-calendar-alt"></i> Contexto electoral</span>
+            </div>
+            <div class="resumen-ejecutivo">
+                <i class="fas fa-lightbulb" style="margin-right:0.6rem;"></i>
+                <strong>Resumen ejecutivo:</strong> Los comentarios se centran en las primarias de Florida, con fuerte polarización entre el Partido Demócrata (azul) y el Republicano. El sentimiento mayoritario es positivo (56.4%), destacando el apoyo a candidatos y la participación cívica como valor compartido.
+            </div>
+        </header>
+
+        <!-- ===== MÉTRICAS GENERALES ===== -->
+        <div class="metricas-grid">
+            <div class="metric-card">
+                <div class="numero">110</div>
+                <div class="etiqueta">Comentarios totales</div>
+                <div class="porcentaje">100%</div>
+            </div>
+            <div class="metric-card positivo">
+                <div class="numero">62</div>
+                <div class="etiqueta"><i class="fas fa-smile" style="margin-right:4px;"></i> Positivos</div>
+                <div class="porcentaje">56.4%</div>
+            </div>
+            <div class="metric-card negativo">
+                <div class="numero">18</div>
+                <div class="etiqueta"><i class="fas fa-frown" style="margin-right:4px;"></i> Negativos</div>
+                <div class="porcentaje">16.4%</div>
+            </div>
+            <div class="metric-card neutro">
+                <div class="numero">30</div>
+                <div class="etiqueta"><i class="fas fa-meh" style="margin-right:4px;"></i> Neutros</div>
+                <div class="porcentaje">27.3%</div>
+            </div>
+        </div>
+
+        <!-- ===== GRÁFICOS ===== -->
+        <div class="charts-row">
+            <div class="chart-box">
+                <h3><i class="fas fa-chart-pie"></i> Distribución de sentimiento</h3>
+                <div class="chart-wrapper">
+                    <canvas id="sentimentChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-box">
+                <h3><i class="fas fa-chart-bar"></i> Temas dominantes</h3>
+                <div class="chart-wrapper">
+                    <canvas id="topicsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== COMENTARIOS DESTACADOS ===== -->
+        <div class="comentarios-section">
+            <!-- Positivos -->
+            <div class="comentario-col col-positivo">
+                <h4><i class="fas fa-thumbs-up" style="color:#2e7d32;"></i> Positivos (62)</h4>
+                <ul>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Mi voto azul"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Votar azul América seguro de Trump y los republicanos corruptos"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Todo será azul"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Vamos azulejos con 💪 todo"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Solo los demócratas son los número uno"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Amo a mis demócratas"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Yo y mi familia votamos por los Republicanos"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Voto republicano, lo demás es socialismo"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Yo si vote por todos los republicanos hasta el perro"</li>
+                    <li><span class="icono"><i class="fas fa-check-circle"></i></span> "Voten por Eliott Rodríguez 🗳️"</li>
+                </ul>
+            </div>
+            <!-- Negativos -->
+            <div class="comentario-col col-negativo">
+                <h4><i class="fas fa-thumbs-down" style="color:#a12424;"></i> Negativos (18)</h4>
+                <ul>
+                    <li><span class="icono"><i class="fas fa-times-circle"></i></span> "Los Democratas Socialistas/Comunistas no van a ganar en Noviembre!!"</li>
+                    <li><span class="icono"><i class="fas fa-times-circle"></i></span> "Nunca voto por republicanos corruptos y saqueadores"</li>
+                    <li><span class="icono"><i class="fas fa-times-circle"></i></span> "Persona corrompida peligrosa que los hombres mayores"</li>
+                    <li><span class="icono"><i class="fas fa-times-circle"></i></span> "MIENTRAS TRUMP CRITICA EL VOTO POR CORREO, EL VOTA POR CORREO"</li>
+                    <li><span class="icono"><i class="fas fa-times-circle"></i></span> "La hipocresía es grotesca por parte de Trump"</li>
+                    <li><span class="icono"><i class="fas fa-times-circle"></i></span> "Todos a echar a esa demagoga de María Elvira que miente más que habla"</li>
+                    <li><span class="icono"><i class="fas fa-times-circle"></i></span> "Fuera María Mentira"</li>
+                </ul>
+            </div>
+            <!-- Neutros -->
+            <div class="comentario-col col-neutro">
+                <h4><i class="fas fa-minus-circle" style="color:#4a4a4a;"></i> Neutros (30)</h4>
+                <ul>
+                    <li><span class="icono"><i class="fas fa-circle"></i></span> "Ya vote"</li>
+                    <li><span class="icono"><i class="fas fa-circle"></i></span> "A votar por favor salgan a votar"</li>
+                    <li><span class="icono"><i class="fas fa-circle"></i></span> "Bendiciones mancebo 🙏"</li>
+                    <li><span class="icono"><i class="fas fa-circle"></i></span> "A qué hora se sabe cómo va quedando las elecciones de Florida hoy???"</li>
+                    <li><span class="icono"><i class="fas fa-circle"></i></span> "Ma como es este país se vota solo por lo que quieren?"</li>
+                    <li><span class="icono"><i class="fas fa-circle"></i></span> "Hoy solo son primarias para sacar candidatos por cada partido. Las elecciones son en Noviembre"</li>
+                    <li><span class="icono"><i class="fas fa-circle"></i></span> (Emojis y GIFs sin texto político)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ===== CLIMA DE OPINIÓN ===== -->
+        <div class="clima-box">
+            <h3><i class="fas fa-cloud-sun"></i> Clima de opinión</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; margin-bottom: 0.8rem;">
+                <span style="background:#e8f0fe; padding:0.2rem 1.2rem; border-radius:30px; font-weight:500;"><i class="fas fa-flag"></i> Polarización política</span>
+                <span style="background:#fef3e8; padding:0.2rem 1.2rem; border-radius:30px; font-weight:500;"><i class="fas fa-comment"></i> Tono apasionado</span>
+                <span style="background:#f3e8fe; padding:0.2rem 1.2rem; border-radius:30px; font-weight:500;"><i class="fas fa-shield-alt"></i> Desconfianza en proceso</span>
+            </div>
+
+            <div class="temas-grid">
+                <div class="tema-item"><span>Apoyo partidista (azul/republicano)</span> <span class="freq">Muy alta</span></div>
+                <div class="tema-item"><span>Votar / participación electoral</span> <span class="freq">Alta</span></div>
+                <div class="tema-item"><span>Críticas a candidatos específicos</span> <span class="freq">Media</span></div>
+                <div class="tema-item"><span>Migración / políticas migratorias</span> <span class="freq">Media</span></div>
+                <div class="tema-item"><span>Corrupción política</span> <span class="freq">Media-baja</span></div>
+            </div>
+
+            <div class="tono-general">
+                <i class="fas fa-quote-left" style="opacity:0.4; margin-right:6px;"></i>
+                El tono general es mayoritariamente de apoyo entusiasta a una posición política, con mensajes cortos y directos. Los comentarios extensos tienden a ser más negativos o críticos, mientras que los cortos son predominantemente positivos o de afirmación partidista.
+            </div>
+        </div>
+
+        <!-- ===== HALLAZGOS Y RECOMENDACIONES ===== -->
+        <div class="hallazgos-rec">
+            <div class="hallazgos-box">
+                <h3><i class="fas fa-search" style="color:#f59e0b;"></i> Hallazgos clave</h3>
+                <ul>
+                    <li><i class="fas fa-arrow-right"></i> Mayoría de apoyo Demócrata en esta muestra específica (aproximadamente 2:1 sobre los Republicanos)</li>
+                    <li><i class="fas fa-arrow-right"></i> Fuerte uso de símbolos: 🔵 como emblema Demócrata; menciones a "Trump" y "María Elvira" como figuras polarizantes</li>
+                    <li><i class="fas fa-arrow-right"></i> Participación como valor compartido: Independientemente del partido, existe consenso en la importancia de votar</li>
+                    <li><i class="fas fa-arrow-right"></i> Temas migratorios generan los comentarios más extensos y elaborados, con mayor carga negativa</li>
+                    <li><i class="fas fa-arrow-right"></i> Desinformación/confusión: Varios usuarios confunden primarias con elecciones generales</li>
+                </ul>
+            </div>
+            <div class="recom-box">
+                <h3><i class="fas fa-lightbulb" style="color:#3b82f6;"></i> Recomendaciones</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Verificar información electoral para contrarrestar desinformación sobre fechas y procesos</li>
+                    <li><i class="fas fa-check-circle"></i> Moderar contenido polarizante que pueda generar conflictos en la comunidad</li>
+                    <li><i class="fas fa-check-circle"></i> Destacar participación cívica como valor por encima de afiliaciones partidistas</li>
+                    <li><i class="fas fa-check-circle"></i> Considerar que el público hispano en Florida tiene opiniones diversas y firmes sobre política migratoria</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            <i class="fas fa-chart-simple"></i> Análisis basado en ~110 comentarios · Elecciones primarias de Florida 2026
+            <br><span style="font-size:0.75rem; opacity:0.6;">Datos extraídos del informe original · Visualización interactiva</span>
+        </footer>
+
+    </div>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ---------- GRÁFICO DE SENTIMIENTO (Pastel) ----------
+            const ctxPie = document.getElementById('sentimentChart').getContext('2d');
+            new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Positivos (56.4%)', 'Negativos (16.4%)', 'Neutros (27.3%)'],
+                    datasets: [{
+                        data: [62, 18, 30],
+                        backgroundColor: [
+                            '#2e7d32',
+                            '#d32f2f',
+                            '#8e8e8e'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 14,
+                                padding: 12,
+                                font: { size: 13 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    let value = context.parsed || 0;
+                                    return label + '  (' + value + ' comentarios)';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '68%'
+                }
+            });
+
+            // ---------- GRÁFICO DE TEMAS (Barras horizontales) ----------
+            const ctxBar = document.getElementById('topicsChart').getContext('2d');
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['Apoyo partidista', 'Participación / voto', 'Críticas a candidatos', 'Migración', 'Corrupción'],
+                    datasets: [{
+                        data: [95, 78, 55, 50, 32],
+                        backgroundColor: [
+                            '#2a6fdb',
+                            '#3b82f6',
+                            '#f59e0b',
+                            '#ef4444',
+                            '#8b5cf6'
+                        ],
+                        borderRadius: 8,
+                        barThickness: 28,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let value = context.raw;
+                                    let label = '';
+                                    if (value >= 80) label = 'Muy alta';
+                                    else if (value >= 60) label = 'Alta';
+                                    else if (value >= 40) label = 'Media';
+                                    else label = 'Media-baja';
+                                    return label + ' (' + value + '%)';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            min: 0,
+                            max: 100,
+                            ticks: { stepSize: 20, font: { size: 10 } }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>
