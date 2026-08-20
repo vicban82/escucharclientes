@@ -509,6 +509,94 @@
         .exec-summary strong {
             color: #1e40af;
         }
+
+        /* ===== NEW: Facebook post card ===== */
+        .fb-post-card {
+            background: #f0f2f5;
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            max-width: 680px;
+            margin: 0.5rem 0 1rem 0;
+            border: 1px solid #d1d5db;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .fb-post-card .fb-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .fb-post-card .fb-avatar {
+            width: 42px;
+            height: 42px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .fb-post-card .fb-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #050505;
+        }
+        .fb-post-card .fb-date {
+            font-size: 0.8rem;
+            color: #65676b;
+        }
+        .fb-post-card .fb-body {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid #e4e6eb;
+            margin-bottom: 0.75rem;
+        }
+        .fb-post-card .fb-body p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #1c1e21;
+        }
+        .fb-post-card .fb-meta {
+            font-size: 0.85rem;
+            color: #65676b;
+            margin-top: 0.4rem;
+        }
+        .fb-post-card .fb-hashtags {
+            color: #1b74e4;
+            font-size: 0.85rem;
+        }
+        .fb-post-card .fb-comment-highlight {
+            background: #f0f2f5;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border: 1px solid #e4e6eb;
+            color: #1c1e21;
+        }
+        .fb-post-card .fb-link-btn {
+            display: inline-block;
+            background: #1877f2;
+            color: white;
+            padding: 0.6rem 1.8rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+            margin-top: 0.75rem;
+        }
+        .fb-post-card .fb-link-btn:hover {
+            background: #0d65d9;
+        }
+        .fb-post-card .fb-footnote {
+            font-size: 0.8rem;
+            color: #65676b;
+            margin-top: 0.75rem;
+        }
     </style>
 </head>
 <body>
@@ -523,6 +611,30 @@
                 <strong>Comentarios analizados:</strong> 316
             </div>
         </header>
+
+        <!-- ===== NUEVA SECCIÓN: PUBLICACIÓN ANALIZADA (con URL) ===== -->
+        <section id="publicacion-original" style="margin: 1rem 0 2rem 0;">
+            <h2>📌 Publicación analizada (contenido original)</h2>
+            <div class="fb-post-card">
+                <div class="fb-header">
+                    <div class="fb-avatar">F</div>
+                    <div>
+                        <div class="fb-name">La Flor de Cuba</div>
+                        <div class="fb-date">20 de julio · </div>
+                    </div>
+                </div>
+                <div class="fb-body">
+                    <p>“El error no es ganar poco. El error es retirar utilidades en lugar de construir infraestructura, sistemas y nuevas fuentes de ingresos. Así es como se escala un negocio.”</p>
+                    <div class="fb-meta">Este video es con fines educativos.</div>
+                    <div class="fb-hashtags">#tiktokshop #emprendimiento #negocios #marketingdigital #empresaria — en Miami.</div>
+                </div>
+                <div class="fb-comment-highlight">
+                    💬 Comentario destacado en el análisis: <em>“Que Flor de Cuba es millonaria que gana miles de dólares todos...”</em>
+                </div>
+                <a href="https://www.facebook.com/share/v/1HKwqWawPe/" target="_blank" rel="noopener noreferrer" class="fb-link-btn">🔗 Ver video original en Facebook</a>
+                <div class="fb-footnote">* Esta es la publicación que generó los 316 comentarios analizados en el informe.</div>
+            </div>
+        </section>
 
         <!-- ===== STICKY NAV ===== -->
         <nav class="sticky-nav">
