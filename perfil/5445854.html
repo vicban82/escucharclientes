@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Audiencia: Flor de Cuba</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --text-main: #333333;
+            --text-muted: #6b7280;
+            --primary: #6366f1;
+            --primary-light: #e0e7ff;
+            --success: #10b981;
+            --neutral: #fbbf24;
+            --danger: #ef4444;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .full-width {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Progress Bars */
+        .bar-container {
+            margin-bottom: 1rem;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .bar-bg {
+            background-color: #e5e7eb;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            width: 0; /* Starts at 0 for JS animation */
+            transition: width 1.5s ease-in-out;
+        }
+
+        .fill-success { background-color: var(--success); }
+        .fill-neutral { background-color: var(--neutral); }
+        .fill-danger { background-color: var(--danger); }
+        .fill-primary { background-color: var(--primary); }
+
+        /* Tags */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Lists */
+        ul {
+            list-style-position: inside;
+            margin-left: 0.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Highlight Metric */
+        .metric-highlight {
+            text-align: center;
+            padding: 1rem;
+            background: var(--primary-light);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        .metric-highlight h3 {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .action-card {
+            border: 1px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .action-card.priority {
+            border-left-color: var(--danger);
+            background-color: #fef2f2;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Análisis de Sentimiento y Audiencia</h1>
+        <p>Reporte Estratégico Comunitario: <strong>Flor de Cuba</strong></p>
+    </header>
+
+    <main class="container">
+        
+        <section class="card">
+            <h2>1. Sentimiento Global y Emoción</h2>
+            <p style="margin-bottom: 1rem;">El tono general de la comunidad es excepcionalmente positivo y protector hacia la creadora (Flor). La audiencia valora la empatía, el esfuerzo familiar y la transparencia.</p>
+            
+            <div class="bar-container">
+                <div class="bar-label"><span>Positivo (Elogios y bendiciones)</span> <span class="counter" data-target="85">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-success" data-width="85%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Neutro (Dudas logísticas)</span> <span class="counter" data-target="10">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-neutral" data-width="10%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Negativo (Críticas aisladas)</span> <span class="counter" data-target="5">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-danger" data-width="5%"></div></div>
+            </div>
+
+            <div class="metric-highlight" style="margin-top: 1.5rem;">
+                <p>Net Sentiment Score (NSS)</p>
+                <h3>+80</h3>
+                <p>Puntuación excelente (Salud de marca muy sólida)</p>
+            </div>
+
+            <strong>Emociones predominantes:</strong>
+            <ul>
+                <li><strong>Alegría/Gratitud:</strong> Felicidad genuina al verla triunfar.</li>
+                <li><strong>Admiración/Inspiración:</strong> Vista como modelo a seguir.</li>
+                <li><strong>Nostalgia/Anhelo:</strong> Evidente en público en Cuba o diáspora.</li>
+                <li><strong>Defensiva/Protectora:</strong> Defensa inmediata ante críticas (ej. Zafira Martinez).</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>3. Intención y Tipo de Comentario</h2>
+            <div class="bar-container">
+                <div class="bar-label"><span>Elogios/Bendiciones (Validación)</span> <span class="counter" data-target="70">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="70%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Preguntas logísticas (Agencias)</span> <span class="counter" data-target="15">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="15%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Defensa comunitaria (Debate)</span> <span class="counter" data-target="10">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="10%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Solicitudes de ayuda/Spam</span> <span class="counter" data-target="5">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="5%"></div></div>
+            </div>
+
+            <hr style="border:0; border-top:1px solid #e5e7eb; margin: 1rem 0;">
+            
+            <strong>Análisis de Quejas (5%):</strong>
+            <p>Críticas morales por "mostrar la caridad", comentarios físicos irrelevantes, juicios sobre maternidad y exigencias de gratitud a EE. UU.</p>
+        </section>
+
+        <section class="card full-width">
+            <h2>2. Temas, Palabras Clave y Tópicos</h2>
+            <div style="margin-bottom: 1rem;">
+                <strong>Palabras clave más frecuentes:</strong>
+                <div class="tag-cloud" style="margin-top: 0.5rem;">
+                    <span class="tag">Bendiciones</span>
+                    <span class="tag">Familia</span>
+                    <span class="tag">Dios</span>
+                    <span class="tag">Agencia</span>
+                    <span class="tag">Libras</span>
+                    <span class="tag">Envío</span>
+                    <span class="tag">Costco</span>
+                    <span class="tag">Hijos</span>
+                    <span class="tag">Madre</span>
+                    <span class="tag">Hermosa/Bella</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <strong>Entidades Mencionadas:</strong>
+                    <ul>
+                        <li><strong>Marcas:</strong> Costco, Café Bustelo, Leche Nido, Cheetos.</li>
+                        <li><strong>Agencias:</strong> Cuba Max, Globestar (Italia).</li>
+                        <li><strong>Lugares:</strong> Cuba, EE. UU., Puerto Rico, Colombia, Venezuela, Holguín.</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong>Preguntas Frecuentes (FAQ):</strong>
+                    <ul>
+                        <li>¿Qué agencia usas para que el envío llegue en 48 horas? <em>(Más repetida)</em></li>
+                        <li>¿Cómo se envían los combos de comida?</li>
+                        <li>¿Por qué no tienes a tus hijos contigo?</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>4. Comunidad y Audiencia</h2>
+            <ul>
+                <li><strong>Alta retención de Fans Destacados:</strong> Usuarios con insignia (ej. Marlen Arocha, Ali Mimi, Darianni Feriahernandez). Demuestra un algoritmo favorable.</li>
+                <li><strong>Embajadores orgánicos:</strong> Usuarios (ej. Sheila Ivelisse, Shiky Mini) actuando como "atención al cliente", respondiendo dudas de terceros.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>5. Comparación y Contexto</h2>
+            <p><strong>Share of Voice:</strong> 100% centrado en la creadora. No se menciona a la competencia.</p>
+            <p><strong>Sentimiento de Nicho:</strong> A diferencia de la polarización política u ostentación común en influencers cubanos, el formato de "compras para la familia" logra una aprobación casi unánime.</p>
+        </section>
+
+        <section class="card full-width">
+            <h2>6. Métricas Derivadas Accionables (El plan de acción)</h2>
+            <div class="action-grid">
+                
+                <div class="action-card priority">
+                    <strong style="color: var(--danger);">🔴 ALTA PRIORIDAD: Oportunidad de Contenido 1</strong>
+                    <p><strong>El video de la Agencia:</strong> Decenas preguntan: "¿Qué agencia usas?".</p>
+                    <p><em>Acción:</em> Crea un Reel/TikTok dedicado a explicar cómo envías, agencia, costos y límites (90 vs 110 libras).</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>💰 Oportunidad de Colaboración (Monetización)</strong>
+                    <p>Si no estás patrocinada por la agencia, este hilo es tu carta de presentación.</p>
+                    <p><em>Acción:</em> Muestra este nivel de interés para cerrar patrocinio o código de afiliado.</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>❤️ Oportunidad de Contenido 2: Maternidad</strong>
+                    <p>Duda latente sobre por qué tus hijos no están contigo.</p>
+                    <p><em>Acción:</em> Un video empático ("Storytime") sobre procesos legales/tiempos de espera. Generará empatía masiva y callará críticas.</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>📈 Alerta de interacciones de calidad</strong>
+                    <p>El comentario crítico de Zafira Martinez generó el mayor engagement.</p>
+                    <p><em>Acción:</em> Úsalo como gancho (sin exponer agresivamente) para explicar tu modelo de negocio: <em>"Grabo esto porque gracias a los videos, puedo seguir comprando para ellos"</em>.</p>
+                </div>
+
+                <div class="action-card" style="grid-column: 1 / -1;">
+                    <strong>💡 Idea de Nicho (Cupones)</strong>
+                    <p>Comentarios sugieren usar cupones para ahorrar. Colabora con una creadora de "Extreme Couponing" para ir a comprar juntas. Uniría dos nichos muy rentables.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Animación de las barras de progreso y contadores numéricos al cargar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            // Animar barras
+            const bars = document.querySelectorAll('.bar-fill');
+            setTimeout(() => {
+                bars.forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 300);
+
+            // Animar números
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 1500; // ms
+                const increment = target / (duration / 16); // 60fps
+                
+                let current = 0;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                setTimeout(updateCounter, 300);
+            });
+        });
+    </script>
+</body>
+</html>
