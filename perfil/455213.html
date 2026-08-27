@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Optimización para Facebook (Open Graph Meta Tags) -->
+    <meta property="og:title" content="📊 Informe de Escucha Social: Flor de Cuba" />
+    <meta property="og:description" content="Análisis de sentimiento, audiencia y plan de acción estratégico. Net Sentiment Score: +15 (Mixto/Polarizado). Descubre los insights de la comunidad." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" />
+    <meta property="og:url" content="https://www.tusitio.com/informe-flor-de-cuba" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Reportes Flor de Cuba" />
+
+    <title>Informe de Escucha Social: Flor de Cuba</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --text-main: #333333;
+            --text-muted: #6b7280;
+            --primary: #6366f1;
+            --primary-light: #e0e7ff;
+            --success: #10b981;
+            --neutral: #fbbf24;
+            --danger: #ef4444;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .full-width {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Progress Bars */
+        .bar-container {
+            margin-bottom: 1rem;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .bar-bg {
+            background-color: #e5e7eb;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            width: 0; /* Starts at 0 for JS animation */
+            transition: width 1.5s ease-in-out;
+        }
+
+        .fill-success { background-color: var(--success); }
+        .fill-neutral { background-color: var(--neutral); }
+        .fill-danger { background-color: var(--danger); }
+        .fill-primary { background-color: var(--primary); }
+        .fill-warning { background-color: #f97316; }
+
+        /* Tags */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .tag.negative {
+            background-color: #fee2e2;
+            color: var(--danger);
+        }
+
+        /* Lists */
+        ul {
+            list-style-position: inside;
+            margin-left: 0.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Highlight Metric */
+        .metric-highlight {
+            text-align: center;
+            padding: 1rem;
+            background: #fef3c7; /* neutral highlight due to +15 score */
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        .metric-highlight h3 {
+            font-size: 3rem;
+            color: #d97706; /* deeper neutral/amber */
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .action-card {
+            border: 1px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .action-card.priority {
+            border-left-color: var(--danger);
+            background-color: #fef2f2;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Análisis de Sentimiento y Audiencia</h1>
+        <p>Informe de Escucha Social: <strong>Flor de Cuba</strong></p>
+    </header>
+
+    <main class="container">
+        
+        <section class="card">
+            <h2>1. Sentimiento Global y Emoción</h2>
+            <p style="margin-bottom: 1rem;">El sentimiento global es <strong>mixto con tendencia a la polarización</strong>. Por un lado, una base de fans muy leal apoya incondicionalmente, pero existe un rechazo contundente hacia el producto promocionado (juegos de azar/apuestas).</p>
+            
+            <div class="bar-container">
+                <div class="bar-label"><span>Positivos (Elogios, saludos, bendiciones)</span> <span class="counter" data-target="35">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-success" data-width="35%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Neutros (Dudas operativas, VPN, registros)</span> <span class="counter" data-target="45">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-neutral" data-width="45%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Negativos (Críticas éticas, alertas de estafa)</span> <span class="counter" data-target="20">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-danger" data-width="20%"></div></div>
+            </div>
+
+            <div class="metric-highlight" style="margin-top: 1.5rem;">
+                <p>Net Sentiment Score (NSS)</p>
+                <h3>+15</h3>
+                <p>Positivo engañoso: Afecto hacia la marca, rechazo hacia el producto</p>
+            </div>
+
+            <strong>Emociones predominantes:</strong>
+            <ul>
+                <li><strong>Curiosidad / Confusión:</strong> Fuerte deseo de saber cómo acceder al juego, especialmente desde Cuba.</li>
+                <li><strong>Alarma / Preocupación:</strong> Miedo a perder dinero y rechazo a la promoción de la ludopatía.</li>
+                <li><strong>Afecto:</strong> Apoyo incondicional de los fans destacados.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>3. Intención y Tipo de Comentario</h2>
+            <div class="bar-container">
+                <div class="bar-label"><span>Preguntas de Acceso (Asistencia técnica)</span> <span class="counter" data-target="45">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="45%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Apoyo Emocional (Saludos y lealtad)</span> <span class="counter" data-target="35">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="35%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Advertencias (Riesgos a otros usuarios)</span> <span class="counter" data-target="15">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-warning" data-width="15%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Quejas Severas y Alertas</span> <span class="counter" data-target="5">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-danger" data-width="5%"></div></div>
+            </div>
+
+            <hr style="border:0; border-top:1px solid #e5e7eb; margin: 1rem 0;">
+            
+            <strong>Análisis de Quejas/Alertas (Nivel de riesgo: ALTO):</strong>
+            <p>Se detectan acusaciones directas de hipocresía ("Una exadicta confesa... animando a otros a que se vuelvan adictos"), advertencias sobre la "Academia" catalogándola de estafa, y testimonios de crisis de seguidores endeudados.</p>
+        </section>
+
+        <section class="card full-width">
+            <h2>2. Temas, Palabras Clave y Tópicos</h2>
+            <div style="margin-bottom: 1rem;">
+                <strong>Palabras clave más frecuentes:</strong>
+                <div class="tag-cloud" style="margin-top: 0.5rem;">
+                    <span class="tag">Cuba</span>
+                    <span class="tag">Jugar</span>
+                    <span class="tag">Dinero</span>
+                    <span class="tag negative">Pagar</span>
+                    <span class="tag">Bendiciones</span>
+                    <span class="tag">Brasil</span>
+                    <span class="tag">Registrarse</span>
+                    <span class="tag">VPN</span>
+                    <span class="tag negative">Estafa</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <strong>Entidades y Temas Mencionados:</strong>
+                    <ul>
+                        <li><strong>Plataformas:</strong> 77BR.LIFE / Tigriñooo (plataforma de juego en Brasil).</li>
+                        <li><strong>Academia:</strong> Mencionada como anhelo por fans y como "estafa" por detractores.</li>
+                        <li><strong>Previas:</strong> ADV (aplicación fraudulenta previa en Centroamérica).</li>
+                        <li><strong>Barreras:</strong> Geobloqueo, uso de VPNs y números de EE.UU.</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong>Preguntas Frecuentes y Contexto:</strong>
+                    <ul>
+                        <li><em>"¿Se puede jugar desde Cuba / España / Venezuela?"</em></li>
+                        <li><em>"¿Cómo me registro?"</em></li>
+                        <li><em>"¿Hay que depositar/pagar dinero antes de jugar?"</em></li>
+                        <li><strong>Riesgo Financiero:</strong> Debate orgánico sobre la pérdida de dinero y responsabilidad ética.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>4. Comunidad y Audiencia</h2>
+            <ul>
+                <li><strong>Comentaristas Únicos:</strong> La participación es muy amplia y orgánica, sin depender de unos pocos usuarios haciendo ruido.</li>
+                <li><strong>El Detractor Informado:</strong> Perfiles como "Fabrizio Brambilla" que tienen peso en la conversación advirtiendo sobre estafas.</li>
+                <li><strong>Los Educadores:</strong> Usuarios (Lisy Yor, Yusimi Sosa) que explican "la letra pequeña" (comisiones, descuentos en dólares).</li>
+                <li><strong>La Embajadora:</strong> Fans leales (ej. Roxi Pérez) dispuestas a pagar VPN o mejorar dispositivos solo para acceder al contenido.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>5. Comparación y Contexto</h2>
+            <p><strong>Share of Voice:</strong> Tú eres el centro de atención, pero la plataforma de juegos está robando protagonismo desde un ángulo negativo.</p>
+            <p><strong>Contexto de Campaña:</strong> La mención a "estafas previas" como la App ADV demuestra que la audiencia ya está predispuesta a desconfiar. El tono de los usuarios cambia de curiosidad a decepción a medida que descubren que hay que invertir dinero real.</p>
+        </section>
+
+        <section class="card full-width">
+            <h2>6. Métricas Derivadas Accionables (Next Steps)</h2>
+            <div class="action-grid">
+                
+                <div class="action-card priority">
+                    <strong style="color: var(--danger);">🚨 ALTA PRIORIDAD: Alertas de Crisis (Ludopatía)</strong>
+                    <p>Usuarios advierten: <em>"Una exadicta fomentando la ludopatía"</em>.</p>
+                    <p><em>Acción:</em> Riesgo reputacional severo. Promocionar casinos online con sistemas de referidos está erosionando la confianza. Considerar detener la promoción si escala el daño a la credibilidad de tu marca personal.</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>💡 Oportunidades de Contenido (Transparencia)</strong>
+                    <p>Tu audiencia no sabe cómo entrar ni si cuesta dinero.</p>
+                    <p><em>Acción:</em> Si continúas la promoción, publica un video de "Transparencia Radical": explica cómo funciona, aclara que SÍ requiere inversión y enfatiza la responsabilidad al jugar para frenar las quejas de engaño.</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>🤝 Ideas para Colaboraciones Futuras</strong>
+                    <p>La audiencia confía en ti como madre y "mujer guerrera", pero rechaza el nicho de apuestas.</p>
+                    <p><em>Acción:</em> Pivota hacia colaboraciones saludables: productos tangibles, envíos a Cuba, recargas, VPNs legales o marcas de maternidad, alineando los patrocinios con tus valores y los de tu comunidad.</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>📈 Engagement de Calidad (Equilibrar la balanza)</strong>
+                    <p>Los comentarios positivos son cortos ("Bendiciones"), pero las críticas son largas y articuladas, dominando el algoritmo de retención.</p>
+                    <p><em>Acción:</em> Crea contenido de valor que invite a tus fans leales a debatir y argumentar positivamente con la misma profundidad que hoy tienen tus detractores.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Animación de las barras de progreso y contadores numéricos al cargar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            // Animar barras
+            const bars = document.querySelectorAll('.bar-fill');
+            setTimeout(() => {
+                bars.forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 300);
+
+            // Animar números
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 1500; // ms
+                const increment = target / (duration / 16); // 60fps
+                
+                let current = 0;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                setTimeout(updateCounter, 300);
+            });
+        });
+    </script>
+</body>
+</html>
