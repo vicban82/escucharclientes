@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Optimización para Facebook (Open Graph Meta Tags) -->
+    <meta property="og:title" content="📊 Informe de Escucha Social: Flor de Cuba" />
+    <meta property="og:description" content="Análisis de sentimiento, audiencia y plan de acción estratégico. Net Sentiment Score: +94 (Altamente Positivo). Descubre los insights de la comunidad." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" />
+    <meta property="og:url" content="https://www.tusitio.com/informe-flor-de-cuba" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Reportes Flor de Cuba" />
+
+    <title>Informe de Escucha Social: Flor de Cuba</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --text-main: #333333;
+            --text-muted: #6b7280;
+            --primary: #6366f1;
+            --primary-light: #e0e7ff;
+            --success: #10b981;
+            --neutral: #fbbf24;
+            --danger: #ef4444;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .full-width {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Progress Bars */
+        .bar-container {
+            margin-bottom: 1rem;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .bar-bg {
+            background-color: #e5e7eb;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            width: 0; /* Starts at 0 for JS animation */
+            transition: width 1.5s ease-in-out;
+        }
+
+        .fill-success { background-color: var(--success); }
+        .fill-neutral { background-color: var(--neutral); }
+        .fill-danger { background-color: var(--danger); }
+        .fill-primary { background-color: var(--primary); }
+
+        /* Tags */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Lists */
+        ul {
+            list-style-position: inside;
+            margin-left: 0.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Highlight Metric */
+        .metric-highlight {
+            text-align: center;
+            padding: 1rem;
+            background: var(--primary-light);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        .metric-highlight h3 {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .action-card {
+            border: 1px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .action-card.priority {
+            border-left-color: var(--danger);
+            background-color: #fef2f2;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Análisis de Sentimiento y Audiencia</h1>
+        <p>Informe de Escucha Social: <strong>Flor de Cuba</strong></p>
+    </header>
+
+    <main class="container">
+        
+        <section class="card">
+            <h2>1. Sentimiento Global y Emoción</h2>
+            <p style="margin-bottom: 1rem;">El sentimiento global es <strong>altamente positivo</strong>. La comunidad muestra un apoyo incondicional, masivo y una clara tendencia de movilización (fidelidad) ante llamados a la acción.</p>
+            
+            <div class="bar-container">
+                <div class="bar-label"><span>Positivos (Apoyo, cariño, confirmaciones)</span> <span class="counter" data-target="95">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-success" data-width="95%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Neutros (Saludos cortos, stickers)</span> <span class="counter" data-target="4">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-neutral" data-width="4%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Negativos / Alertas (Spam, Suplantación)</span> <span class="counter" data-target="1">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-danger" data-width="1%"></div></div>
+            </div>
+
+            <div class="metric-highlight" style="margin-top: 1.5rem;">
+                <p>Net Sentiment Score (NSS)</p>
+                <h3>+94</h3>
+                <p>Excelente salud de marca y percepción</p>
+            </div>
+
+            <strong>Emociones predominantes:</strong>
+            <ul>
+                <li><strong>Gratitud y Devoción:</strong> Alta presencia de lenguaje espiritual ("Bendiciones", "Amén").</li>
+                <li><strong>Alegría y Cariño:</strong> Uso extensivo de emojis de afecto (❤️, 😍, 🌸, 🥰).</li>
+                <li><strong>Fidelidad:</strong> Respuesta incondicional para migrar o seguir cuentas ("Ahí estaré mi florecita").</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>3. Intención y Tipo de Comentario</h2>
+            <div class="bar-container">
+                <div class="bar-label"><span>Confirmación y Lealtad ("Listo", "Te sigo")</span> <span class="counter" data-target="60">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="60%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Elogios (Cumplidos directos)</span> <span class="counter" data-target="30">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="30%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Solicitudes/Peticiones (Privados, ENA)</span> <span class="counter" data-target="8">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="8%"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-label"><span>Alertas de Seguridad / Spam</span> <span class="counter" data-target="2">0</span>%</div>
+                <div class="bar-bg"><div class="bar-fill fill-primary" data-width="2%"></div></div>
+            </div>
+
+            <hr style="border:0; border-top:1px solid #e5e7eb; margin: 1rem 0;">
+            
+            <strong>Análisis de Quejas/Alertas (1-2%):</strong>
+            <p>Se destaca una advertencia crítica sobre una cuenta sin "palomita azul" (posible engaño/suplantación). Además, se detectó una fracción minúscula de spam promocional, confirmando una comunidad limpia.</p>
+        </section>
+
+        <section class="card full-width">
+            <h2>2. Temas, Palabras Clave y Tópicos</h2>
+            <div style="margin-bottom: 1rem;">
+                <strong>Palabras clave más frecuentes:</strong>
+                <div class="tag-cloud" style="margin-top: 0.5rem;">
+                    <span class="tag">Bendiciones</span>
+                    <span class="tag">Cuba</span>
+                    <span class="tag">Seguir / Listo</span>
+                    <span class="tag">Flor / Florecita</span>
+                    <span class="tag">Amén</span>
+                    <span class="tag">Dios te bendiga</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <strong>Entidades Mencionadas:</strong>
+                    <ul>
+                        <li><strong>Nombres:</strong> Flor Danay Hernández Ochoa.</li>
+                        <li><strong>Geolocalizaciones:</strong> Cuba (La Habana, Santiago de Cuba, Guantánamo, Holguín, Camagüey, Las Tunas, Matanzas), Colombia, Honduras, Guyana.</li>
+                        <li><strong>Hashtags/Stickers:</strong> #blssd (Blessed).</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong>Preguntas Frecuentes y Contexto:</strong>
+                    <ul>
+                        <li><em>"¿Pon el enlace para seguirte?"</em> (Fricción en la acción de buscar).</li>
+                        <li><em>"¿Seremos primas?"</em> (Empatía por el apellido Ochoa).</li>
+                        <li><strong>Apagones:</strong> Contexto socioeconómico de la audiencia ("a ver si te puedo seguir muchos apagones").</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>4. Comunidad y Audiencia</h2>
+            <ul>
+                <li><strong>Base de Super Fans sólida:</strong> Altísimo porcentaje de insignias de "Fan destacado" (ej. Claribel Martín, Silvia Aurora, Marlen Arocha, Lisset Vazquez). Esto indica un algoritmo sumamente a favor de la creadora.</li>
+                <li><strong>Perfil Demográfico:</strong> Audiencia predominantemente femenina, cuentas reales, con un arraigo fuertísimo a la identidad cubana, tanto residentes en la isla como en el exterior.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>5. Comparación y Contexto</h2>
+            <p><strong>Share of Voice (100%):</strong> La conversación gira absolutamente en torno a la creadora. No existen menciones a la competencia u otros influencers en este conjunto de datos.</p>
+            <p><strong>Contexto de Campaña:</strong> La publicación claramente pidió a los seguidores migrar o apoyar una cuenta específica. La respuesta fue abrumadora, logrando una tasa de conversión altísima basada puramente en el apego emocional.</p>
+        </section>
+
+        <section class="card full-width">
+            <h2>6. Métricas Derivadas Accionables (Next Steps)</h2>
+            <div class="action-grid">
+                
+                <div class="action-card priority">
+                    <strong style="color: var(--danger);">🚨 ALTA PRIORIDAD: Alerta de Crisis (Suplantación)</strong>
+                    <p>Usuarios alertan: <em>"Esa no es su cuenta... no se dejen engañar"</em>.</p>
+                    <p><em>Acción:</em> Revisa la cuenta a la que dirigiste al público. Haz un Story/Reel inmediato aclarando cuál es tu cuenta real con el check azul para evitar que tu comunidad caiga en estafas.</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>💡 Oportunidades de Contenido (Reducir Fricción)</strong>
+                    <p>La pregunta "¿Pon el enlace para seguirte?" muestra que a la audiencia le cuesta buscar la cuenta manualmente.</p>
+                    <p><em>Acción:</em> Asegúrate de que, en este tipo de llamadas a la acción, el enlace directo esté siempre fijado en el primer comentario o en tu biografía.</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>🤝 Gestión de Comunidad (PR y Relaciones)</strong>
+                    <p>Tus fans destacados están reclamando con cariño que no respondes sus mensajes privados.</p>
+                    <p><em>Acción:</em> Dedica 15 min a responder los DMs de tus top fans. Además, considera dar visibilidad (en Stories) a causas que publican en tu muro, como la de los estudiantes de la ENA, para humanizar tu marca.</p>
+                </div>
+
+                <div class="action-card">
+                    <strong>📈 Engagement de Calidad (Para el Algoritmo)</strong>
+                    <p>El engagement tiene alto volumen pero respuestas muy cortas ("Listo", "Ok").</p>
+                    <p><em>Acción:</em> Empieza a hacer preguntas abiertas en el copy de tus publicaciones ("¿Desde qué ciudad me apoyas hoy?" o "¿Qué es lo que más te gusta de mi contenido?") para generar comentarios largos y retener mejor al algoritmo.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Animación de las barras de progreso y contadores numéricos al cargar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            // Animar barras
+            const bars = document.querySelectorAll('.bar-fill');
+            setTimeout(() => {
+                bars.forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 300);
+
+            // Animar números
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 1500; // ms
+                const increment = target / (duration / 16); // 60fps
+                
+                let current = 0;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                setTimeout(updateCounter, 300);
+            });
+        });
+    </script>
+</body>
+</html>
